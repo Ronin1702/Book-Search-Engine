@@ -1,11 +1,17 @@
 {
   "name": "Book-Search-Engine",
   "version": "1.0.0",
-  "description": "A book search engine using MERN stack.",
+  "description": "A book search engine demonstrating M.E.R.N. stack development by using using Google Books API and GraphQL with Apollo Server to fetch and modify data, replacing the old RESTful API method.",
   "main": "server/server.js",
+  "engines": {
+    "node": "20.7.1",
+    "npm": "10.1.0"
+  },
   "scripts": {
-    "start": "node server/server.js",
-    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
+    "start": "npm run build && cd server && node server.js",
+    "server": "cd server && nodemon server.js --ignore client",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "build": "cd client && npm run build",
     "update": "cd client && ncu -u && npm i && cd .. && cd server && ncu -u && npm i &&ncu -u && npm i"
