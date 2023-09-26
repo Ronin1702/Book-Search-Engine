@@ -1,6 +1,7 @@
 # Book-Search-Engine [![MIT](https://img.shields.io/static/v1.svg?label=📃%20License&message=MIT&color=important)](./LICENSE)
 
-A book search engine using MERN stack.
+A book search engine using using Google Books API and GraphQL with Apollo Server to fetch and modify data, replacing the old RESTful API method.
+This app is also deploy to Heroku.
 
 ## Table of Contents
 
@@ -103,7 +104,8 @@ SO THAT I can keep a list of books to purchase
 
 [![Tweet about this](https://img.shields.io/static/v1.svg?label=Tweet%20about%20this&message=🎵&color=blue&logo=twitter&style=social)](https://twitter.com/intent/tweet?text=Check%20out%20this%20Book%20Search%20Engine%20App%20on%20GitHub:%20https://github.com/Ronin1702/Book-Search-Engine)
 
-- GitHub Repo : [React Portfolio](https://github.com/Ronin1702/Book-Search-Engine)
+- GitHub Repo : [Book-Search-Engine](https://github.com/Ronin1702/Book-Search-Engine)
+- HeroKu Deployed Link : [Book-Search-Engine](https://book-search-engine-3000.herokuapp.com/)
 
 [_back to top_](#table-of-contents)
 
@@ -115,4 +117,4 @@ SO THAT I can keep a list of books to purchase
 
 ---
 
-[![Copyright](https://img.shields.io/static/v1.svg?label=Book%20Search%20Engine%20©️%20&message=%202023%20Kai%20Chen&labelColor=informational&color=033450)](https://kaichen.biz)
+[![Copyright](https://img.shields.io/static/v1.svg?label=Book%20Search%20Engine%20©️%20&message=%202023%20Kai%20Chen&labelColor=informational&color=033450)](https://kaichen-3000.netlify.app)
