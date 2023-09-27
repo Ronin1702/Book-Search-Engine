@@ -3,8 +3,8 @@ const { gql } = require('graphql-tag');
 // Define the GraphQL type definitions
 const typeDefs = gql`
   type Book {
-    bookId: ID!
-    authors: [String!]
+    bookId: String!
+    authors: [String!]!
     description: String!
     title: String!
     image: String
@@ -12,10 +12,10 @@ const typeDefs = gql`
   }
 
   input BookInput {
-    authors: [String!]
+    authors: [String!]!
     description: String!
     title: String!
-    bookId: ID!
+    bookId: String!
     image: String
     link: String
   }
@@ -40,16 +40,15 @@ const typeDefs = gql`
   }
 
   type Query {
-    me: User
+    me: User!
   }
 
   type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(input: CreateUserInput!): Auth
-    saveBook(input: BookInput!): User
-    removeBook(bookId: ID!): User
+    login(email: String!, password: String!): Auth!
+    addUser(input: CreateUserInput!): Auth!
+    saveBook(input: BookInput!): User!
+    removeBook(bookId: String!): User!
   }
 `;
 
-// export typeDefs
 module.exports = typeDefs;
