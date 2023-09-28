@@ -66,6 +66,7 @@ const SearchBooks = () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
+      alert('You need to be logged in to save books');
       return false;
     }
 
@@ -74,13 +75,14 @@ const SearchBooks = () => {
         variables: { input: bookToSave },
         context: {
           headers: {
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       });
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
+      alert('Failed to save book. Please try again later.');
     }
   };
 
