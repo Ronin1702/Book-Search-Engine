@@ -3,9 +3,6 @@ require('dotenv').config();
 
 // Initialize variables
 const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const bodyParser = require('body-parser');
 const path = require('path');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
@@ -23,25 +20,17 @@ const server = new ApolloServer({
 });
 
 const app = express();
-const httpServer = http.createServer(app);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
-  });
-}
-
 const startApolloServer = async () => {
   await server.start();
   // Use the new middleware setup
-  app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server));
+  app.use('/graphql', expressMiddleware(server));
 
   db.once('open', () => {
-    httpServer.listen(PORT, () => {
+    app.listen(PORT, () => {
       // Adjusted to use httpServer
       console.log(`API Port ${PORT} Active 🚀`);
       console.log(`Visit Apollo GraphQL API Sever at http://localhost:${PORT}/graphql`+' 🚀');
@@ -51,3 +40,13 @@ const startApolloServer = async () => {
 
 // Call the async function to start the server
 startApolloServer();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
+  });
+}
+
+//Error Handling for Database connection
+db.on('error', console.error.bind(console, 'connection error:'));
