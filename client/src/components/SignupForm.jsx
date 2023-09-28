@@ -40,7 +40,8 @@ const SignupForm = () => {
 
     try {
       // Execute mutation
-      const { data } = await addUser({ variables: { ...userFormData } });
+      const { data } = await addUser({ variables: { input: userFormData } });
+      console.log("Data from addUser mutation: ", data);
       // Log the user in with the received token
       Auth.login(data.addUser.token);
     } catch (err) {
