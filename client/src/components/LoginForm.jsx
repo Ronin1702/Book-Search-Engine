@@ -54,11 +54,12 @@ const LoginForm = () => {
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
-            type='text'
+            type='email'
             placeholder='Your email'
             name='email'
             onChange={handleInputChange}
             value={userFormData.email}
+            autoComplete="username"
             required
           />
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
@@ -72,6 +73,7 @@ const LoginForm = () => {
             name='password'
             onChange={handleInputChange}
             value={userFormData.password}
+            autoComplete='current-password'
             required
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>

@@ -86,6 +86,7 @@ const SignupForm = () => {
             name='email'
             onChange={handleInputChange}
             value={userFormData.email}
+            autoComplete="username"
             required
           />
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
@@ -99,6 +100,7 @@ const SignupForm = () => {
             name='password'
             onChange={handleInputChange}
             value={userFormData.password}
+            autoComplete='current-password'
             required
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
