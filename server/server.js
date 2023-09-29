@@ -16,37 +16,38 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware,
 });
 
 const app = express();
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
+// Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
-  // Use the new middleware setup
-  app.use('/graphql', expressMiddleware(server));
+
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+
+  app.use(
+    '/graphql',
+    expressMiddleware(server, {
+      context: authMiddleware,
+    })
+  );
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
+  }
 
   db.once('open', () => {
     app.listen(PORT, () => {
-      // Adjusted to use httpServer
-      console.log(`API Port ${PORT} Active 🚀`);
-      console.log(`Visit Apollo GraphQL API Sever at http://localhost:${PORT}/graphql`+' 🚀');
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
 };
 
 // Call the async function to start the server
 startApolloServer();
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
-  });
-}
-
-//Error Handling for Database connection
-db.on('error', console.error.bind(console, 'connection error:'));
