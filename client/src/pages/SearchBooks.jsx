@@ -66,12 +66,11 @@ const SearchBooks = () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
-      alert('You need to be logged in to save books');
       return false;
     }
 
     try {
-      await saveBook({
+       const { data } = await saveBook({
         variables: { input: bookToSave },
         context: {
           headers: {
@@ -79,6 +78,10 @@ const SearchBooks = () => {
           },
         },
       });
+      // if there was an error, throw an error
+      if (!data) throw new Error('something went wrong!'); 
+
+      // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
