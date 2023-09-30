@@ -1,22 +1,25 @@
-import { useQuery, useMutation } from '@apollo/client';
+
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { GET_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
+import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
-
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
+import { REMOVE_BOOK } from '../utils/mutations';
+// create state to hold saved bookId values
 const SavedBooks = () => {
-  // Execute the GET_ME query
-  const { data, loading } = useQuery(GET_ME);
+  // Execute the GET_ME query on component load and save it to a variable named userData
+  const  {data, error, loading}  = useQuery(GET_ME);
   const userData = data?.me || {};
 
-  // Set up the useMutation hook
-  const [removeBook] = useMutation(REMOVE_BOOK, {
-    onError: (err) => console.error(err),
-  });
+  // Use the useMutation() Hook to execute the REMOVE_BOOK mutation
+  const [removeBook] = useMutation(REMOVE_BOOK)
+
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // Function to handle book deletion, replacing the old deleteBook function
   const handleDeleteBook = async (bookId) => {
+    const bookToDelete = userData.savedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -29,22 +32,20 @@ const SavedBooks = () => {
         variables: { bookId },
         context: {
           headers: {
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       });
-
       // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      removeBookId([...savedBooksIds, bookToDelete.bookId]);
     } catch (err) {
       console.error(err);
     }
   };
 
   // if data isn't here yet, say so
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
+  if (loading) return <h2>LOADING...</h2>;
+  if (error) return <h2>ERROR: {error.message}</h2>;
 
   return (
     <>

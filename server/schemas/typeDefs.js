@@ -4,9 +4,9 @@ const { gql } = require('graphql-tag');
 const typeDefs = gql`
   type Book {
     bookId: String!
-    title: String!
+    title: String
     authors: [String]
-    description: String!
+    description: String
     image: String
     link: String
   }
@@ -24,7 +24,7 @@ const typeDefs = gql`
     _id: ID!
     username: String!
     email: String!
-    savedBooks: [Book]!
+    savedBooks: [Book]
   }
   type Auth {
     token: ID!
