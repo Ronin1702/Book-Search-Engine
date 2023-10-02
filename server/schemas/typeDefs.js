@@ -3,21 +3,13 @@ const { gql } = require('graphql-tag');
 // Define the GraphQL type definitions
 const typeDefs = gql`
   type Book {
-    bookId: String!
-    title: String
+    _id: ID!
     authors: [String]
     description: String
-    image: String
-    link: String
-  }
-
-  input BookData {
     bookId: String!
-    title: String
-    authors: [String]
-    description: String
     image: String
     link: String
+    title: String!
   }
 
   type User {
@@ -26,15 +18,27 @@ const typeDefs = gql`
     email: String!
     savedBooks: [Book]
   }
+
+  input BookData {
+    authors: [String]
+    description: String
+    bookId: String!
+    image: String
+    link: String
+    title: String!
+  }
+
   type Auth {
     token: ID!
-    user: User!
+    user: User
   }
 
   type Query {
-    users: [User]!
-    user(username: String!): User
+    users: [User]
+    user(username: String!, email: String!): User
     me: User
+    books: [Book]
+    book(bookId: String!): Book
   }
 
   type Mutation {

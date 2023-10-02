@@ -1,13 +1,38 @@
 const { User } = require('../models');
+const { Book } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
+const { GraphQLError } = require('graphql');
 
 const resolvers = {
   Query: {
+    books: async () => {
+      return await Book.find({});
+    },
+    book: async (_, { bookId }) => {
+      return await Book.findByIdAndUpdate(bookId);
+    },
+
+    users: async () => {
+      return await User.find({}).populate(`savedBooks`);
+    },
+    user: async (_, { _id, username, email }) => {
+      return await User.findOne({ _id, username, email }).populate(
+        `savedBooks`
+      );
+    },
     // async getSingleUser({ user = null, params }, res) {/*...*/}
     // By adding context to our query, we can retrieve the logged in user without specifically searching for them
-    me: async (_, __, context) => {
-      if (!context.user) throw AuthenticationError;
-      return User.findOne({ _id: context.user._id }).populate('savedBooks');
+    me: async (parent, args, context, info) => {
+      console.log('Context from me query:', context.user);
+      // console.log('Parent Path from me query:', parent);
+      // console.log('Args Path from me query:', args);
+      // console.log('Info Path from me query:', info);
+      // if no user object, throw authentication error
+      if (context.user) {
+        // initialize variables
+        return User.findOne({ _id: context.user._id }).populate(`savedBooks`);
+      }
+      throw new GraphQLError('Failed to Execute me Query from Resolvers.js');
     },
   },
 
@@ -21,7 +46,7 @@ const resolvers = {
 
       const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) {
-        throw AuthenticationError;
+        throw new GraphQLError('Incorrect Password');
       }
 
       const token = signToken(user);
