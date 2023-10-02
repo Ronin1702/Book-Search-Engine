@@ -3,7 +3,6 @@ const { gql } = require('graphql-tag');
 // Define the GraphQL type definitions
 const typeDefs = gql`
   type Book {
-    _id: ID!
     authors: [String]
     description: String
     bookId: String!
