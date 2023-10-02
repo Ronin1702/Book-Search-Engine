@@ -21,7 +21,7 @@ const SavedBooks = () => {
     },
   });
   console.log('data from SavedBooks page: ', data);
-  const userData =  data?.me || {};
+  const userData = data?.me || {};
   console.log('savedBooks data: ', userData.me?.savedBooks);
   // Use the useMutation() Hook to execute the REMOVE_BOOK mutation
   const [removeBook] = useMutation(REMOVE_BOOK);
@@ -58,11 +58,10 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className='text-light bg-dark p-5'>
-        <Container>
-          <h1>Viewing saved books!</h1>
-        </Container>
-      </div>
+      <Container fluid className='text-light bg-dark p-5'>
+        <h1>Viewing saved books!</h1>
+      </Container>
+
       <Container>
         <h2 className='pt-5'>
           {userData.savedBooks.length
@@ -74,7 +73,7 @@ const SavedBooks = () => {
         <Row>
           {userData.savedBooks.map((book) => {
             return (
-              <Col md='4'key={book.bookId}>
+              <Col md='4' key={book.bookId}>
                 <Card key={book.bookId} border='dark'>
                   {book.image ? (
                     <Card.Img
